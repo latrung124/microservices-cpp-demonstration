@@ -3,4 +3,8 @@ project(microservices-system)
 
 set(CMAKE_CXX_STANDARD 20)
 
+find_package(protobuf REQUIRED)
+
 add_executable(gateway gateway/main.cpp)
+
+target_link_libraries(gateway protobuf::protobuf)
