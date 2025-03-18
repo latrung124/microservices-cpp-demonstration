@@ -1,0 +1,22 @@
+microservices-system/
+├── CMakeLists.txt
+├── config/
+│   └── config.yaml
+├── common/
+│   ├── config_manager.h
+│   └── proto/
+│       ├── user_service.proto
+│       ├── task_management_service.proto
+│       └── ...
+├── gateway/
+│   ├── main.cpp
+│   └── gateway_service.h
+└── services/
+    ├── user/
+    │   ├── main.cpp
+    │   ├── user_service.h
+    │   ├── user_handler.h
+    │   └── user_repository.h
+    ├── task-management/
+    │   └── ... (similar structure)
+    └── ... (other services)
