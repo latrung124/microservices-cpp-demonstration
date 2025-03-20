@@ -1,0 +1,9 @@
+environment: local  # Change to "cloud" for deployment
+
+services:
+  user_service:
+    local: "localhost:50051"
+    cloud: "user-service.prod.svc.cluster.local:80" #temporarily using this
+  task_management_service:
+    local: "localhost:50052"
+    cloud: "task-service.prod.svc.cluster.local:80" #temporarily using this

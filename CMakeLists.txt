@@ -15,4 +15,6 @@ add_executable(gateway
     gateway/main.cpp
     ${COMMON_SOURCES})
 
-target_link_libraries(gateway protobuf::protobuf)
+target_link_libraries(gateway
+ protobuf::protobuf
+ yaml-cpp)
