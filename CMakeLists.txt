@@ -7,14 +7,40 @@ find_package(protobuf REQUIRED)
 find_package(yaml-cpp REQUIRED)
 find_package(httplib REQUIRED)
 
+file(GLOB_RECURSE PROTO_FILES common/proto/*.proto)
+protobuf_generate_cpp(PROTO_SOURCES PROTO_HEADERS ${PROTO_FILES})
+
 set(COMMON_SOURCES
     common/config_manager.h
     common/config_manager.cpp)
 
-add_executable(gateway
-    gateway/main.cpp
+# common library defines the common code shared by all services: proto messages, config manager, etc.
+add_library(common STATIC
+    ${PROTO_SOURCES}
     ${COMMON_SOURCES})
 
+target_include_directories(common
+    PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
+
+target_link_libraries(common
+    protobuf::protobuf
+    yaml-cpp)
+
+# Define each service as an executable target.
+set(SERVICES user)
+
+foreach(SERVICE ${SERVICES})
+    add_executable(${SERVICE}_service services/${SERVICE}/main.cpp)
+    target_link_libraries(${SERVICE}_service
+        common
+        protobuf::protobuf
+        yaml-cpp)
+endforeach()
+
+add_executable(gateway
+    gateway/main.cpp)
+
 target_link_libraries(gateway
+ common
  protobuf::protobuf
  yaml-cpp)
