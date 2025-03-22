@@ -4,9 +4,13 @@ microservices-system/
 │   └── config.yaml
 ├── common/
 │   ├── config_manager.h
-│   └── proto/
-│       ├── user_service.proto
-│       ├── task_management_service.proto
+│   ├── proto/
+│   │   ├── user_service.proto
+│   │   ├── task_management_service.proto
+│   │   └── ...
+│   └── database/
+│       ├── IDatabaseConnection.h 
+│       ├── SQLiteConnection.h 
 │       └── ...
 ├── gateway/
 │   ├── main.cpp
@@ -15,8 +19,13 @@ microservices-system/
     ├── user/
     │   ├── main.cpp
     │   ├── user_service.h
-    │   ├── user_handler.h
-    │   └── user_repository.h
+    │   ├── data-structures/
+    │   │   ├── user.h
+    │   │   └── ...
+    │   └── repositories/
+    │       ├── IUserRepository.h
+    │       ├── SQLiteUserRepository.h
+    │       └── ...
     ├── task-management/
     │   └── ... (similar structure)
     └── ... (other services)
