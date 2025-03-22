@@ -35,10 +35,23 @@ target_link_libraries(common
 
 # Define each service as an executable target.
 set(SERVICES user)
+set(user_SOURCES
+    services/user/data-structures/user.h
+    services/user/data-structures/user.cpp
+    services/user/repositories/IUserRepository.h
+    services/user/repositories/SQLiteUserRepository.h
+    services/user/repositories/SQLiteUserRepository.cpp
+    services/user/main.cpp)
+
+add_executable(user_service
+    ${user_SOURCES})
+
+target_include_directories(user_service
+    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}
+    PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 
 foreach(SERVICE ${SERVICES})
-    add_executable(${SERVICE}_service services/${SERVICE}/main.cpp)
-    target_link_libraries(${SERVICE}_service
+   target_link_libraries(${SERVICE}_service
         common
         protobuf::protobuf
         yaml-cpp)
