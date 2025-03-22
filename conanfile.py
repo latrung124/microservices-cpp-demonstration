@@ -8,6 +8,7 @@ class ExampleRecipe(ConanFile):
         self.requires("protobuf/5.27.0")
         self.requires("yaml-cpp/0.8.0")
         self.requires("cpp-httplib/0.18.0")
+        self.requires("sqlitecpp/3.3.2")
     
     def build_requirements(self):
         self.build_requires("cmake/3.22.6")
