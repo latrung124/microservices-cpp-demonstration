@@ -71,9 +71,13 @@ foreach(SERVICE ${SERVICES})
 endforeach()
 
 add_executable(gateway
+    gateway/gateway_service.h
+    gateway/gateway_service.cpp
     gateway/main.cpp)
+
+target_include_directories(gateway
+    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
 target_link_libraries(gateway
  common
- protobuf::protobuf
- yaml-cpp)
+ httplib::httplib)

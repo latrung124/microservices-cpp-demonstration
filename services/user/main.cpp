@@ -9,7 +9,7 @@ int main()
 {
     std::cout << "User service is running..." << std::endl;
 
-    auto connection = std::make_shared<SQLiteConnection>(std::string(DB_SOURCE_PATH) + "/user.db");
+    auto connection = std::make_shared<SQLiteConnection>(std::string(DB_SOURCE_PATH) + "/Users.db");
     auto repo = std::make_unique<SQLiteUserRepository>(connection);
     UserService service(50051, std::move(repo));
     service.start();

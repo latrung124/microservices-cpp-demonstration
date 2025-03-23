@@ -46,8 +46,13 @@ void UserService::start()
         userProto.set_username(user.getUserName());
         userProto.set_email(user.getEmail());
         res.set_content(userProto.SerializeAsString(), "application/protobuf");
+
+        std::cout << "User created successfully!" << std::endl;
     });
+
+    std::cout << "user service listening on port " << m_port << std::endl;
 
     // Start the server listening on localhost and the specified port
     m_server.listen("localhost", m_port);
+
 }
