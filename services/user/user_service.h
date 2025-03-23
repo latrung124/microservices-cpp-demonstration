@@ -24,7 +24,6 @@ class UserService
 {
 public:
     using IUserRepoUPtr = std::unique_ptr<IUserRepository>;
-    using ConfigManagerUPtr = std::unique_ptr<ConfigManager>;
     using UserHandlerUPtr = std::unique_ptr<UserHandler>;
 
     UserService(int port, IUserRepoUPtr userRepo);

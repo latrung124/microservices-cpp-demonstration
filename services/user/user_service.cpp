@@ -13,17 +13,22 @@
 #include <user_service.pb.h>
 
 #include "services/user/data-structures/User.h"
-#include "services/user/handlers/UserHandler.h"
+#include "services/user/business/user_handler.h"
+#include "services/user/repositories/IUserRepository.h"
 
 UserService::UserService(int port, IUserRepoUPtr userRepo)
     : m_port(port),
-    m_userRepo(std::move(userRepo)),
-    m_userHandler(std::make_unique<UserHandler>(m_userRepo))
+    m_userRepo(std::move(userRepo))
 {
+    m_userHandler = std::make_unique<UserHandler>(std::move(m_userRepo));
 }
 
 void UserService::start()
 {
+    /**
+     * Define an HTTP Post route at /users
+     * Lambda function is the request handler for this route
+     */
     m_server.Post("/users", [&](const httplib::Request& req, httplib::Response& res) {
         std::cout << "Received POST request to create user!" << std::endl;
 
@@ -37,8 +42,12 @@ void UserService::start()
         }
 
         User user = m_userHandler->createUser(request);
-        res.set_content(user.toProtobuf().SerializeAsString(), "application/protobuf");
+        user_service::User userProto;
+        userProto.set_username(user.getUserName());
+        userProto.set_email(user.getEmail());
+        res.set_content(userProto.SerializeAsString(), "application/protobuf");
     });
 
-    svr.listen("localhost", m_port);
+    // Start the server listening on localhost and the specified port
+    m_server.listen("localhost", m_port);
 }

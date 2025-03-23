@@ -33,4 +33,5 @@ public:
 private:
     UserRepoUPtr m_userRepo;
 };
+
 #endif // USER_HANDLER_H_

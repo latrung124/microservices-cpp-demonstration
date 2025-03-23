@@ -3,6 +3,8 @@ project(microservices-system)
 
 set(CMAKE_CXX_STANDARD 20)
 
+add_definitions(-DDB_SOURCE_PATH="${CMAKE_SOURCE_DIR}/databases")
+
 find_package(protobuf REQUIRED)
 find_package(yaml-cpp REQUIRED)
 find_package(httplib REQUIRED)
@@ -50,7 +52,7 @@ set(user_SOURCES
     services/user/repositories/IUserRepository.h
     services/user/repositories/SQLiteUserRepository.h
 
-    services/user/user_service.h
+    services/user/user_service.cpp
     services/user/business/user_handler.cpp
     services/user/repositories/SQLiteUserRepository.cpp
     services/user/main.cpp)

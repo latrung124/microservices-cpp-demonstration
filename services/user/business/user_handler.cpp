@@ -9,8 +9,8 @@
 
 #include "user_service.pb.h"
 
-#include "services/user/repositories/SQLiteUserRepository.h"
 #include "services/user/data-structures/User.h"
+#include "services/user/repositories/SQLiteUserRepository.h"
 
 UserHandler::UserHandler(UserRepoUPtr user_repository)
     : m_userRepo(std::move(user_repository))
