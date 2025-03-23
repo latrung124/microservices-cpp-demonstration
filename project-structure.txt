@@ -19,6 +19,9 @@ microservices-system/
     ├── user/
     │   ├── main.cpp
     │   ├── user_service.h
+    |   ├── business
+    │   │   ├── user_handler.h
+    │   │   └── ...
     │   ├── data-structures/
     │   │   ├── user.h
     │   │   └── ...

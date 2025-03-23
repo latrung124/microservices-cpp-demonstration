@@ -9,7 +9,13 @@ find_package(httplib REQUIRED)
 find_package(SQLiteCpp REQUIRED)
 
 file(GLOB_RECURSE PROTO_FILES common/proto/*.proto)
-protobuf_generate_cpp(PROTO_SOURCES PROTO_HEADERS ${PROTO_FILES})
+# Generate protobuf source and header files
+protobuf_generate(
+    LANGUAGE cpp
+    OUT_VAR PROTO_SOURCES
+    IMPORT_DIRS ${CMAKE_SOURCE_DIR}/common/proto
+    PROTOS ${PROTO_FILES}
+)
 
 set(COMMON_SOURCES
     common/database/IDatabaseConnection.h
@@ -29,6 +35,7 @@ target_include_directories(common
     PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
 target_link_libraries(common
+    PUBLIC
     protobuf::protobuf
     yaml-cpp
     SQLiteCpp)
@@ -36,10 +43,13 @@ target_link_libraries(common
 # Define each service as an executable target.
 set(SERVICES user)
 set(user_SOURCES
+    services/user/business/user_handler.h
     services/user/data-structures/user.h
     services/user/data-structures/user.cpp
     services/user/repositories/IUserRepository.h
     services/user/repositories/SQLiteUserRepository.h
+
+    services/user/business/user_handler.cpp
     services/user/repositories/SQLiteUserRepository.cpp
     services/user/main.cpp)
 
@@ -52,9 +62,7 @@ target_include_directories(user_service
 
 foreach(SERVICE ${SERVICES})
    target_link_libraries(${SERVICE}_service
-        common
-        protobuf::protobuf
-        yaml-cpp)
+        common)
 endforeach()
 
 add_executable(gateway
