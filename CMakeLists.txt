@@ -43,12 +43,14 @@ target_link_libraries(common
 # Define each service as an executable target.
 set(SERVICES user)
 set(user_SOURCES
+    services/user/user_service.h
     services/user/business/user_handler.h
     services/user/data-structures/user.h
     services/user/data-structures/user.cpp
     services/user/repositories/IUserRepository.h
     services/user/repositories/SQLiteUserRepository.h
 
+    services/user/user_service.h
     services/user/business/user_handler.cpp
     services/user/repositories/SQLiteUserRepository.cpp
     services/user/main.cpp)
@@ -62,7 +64,8 @@ target_include_directories(user_service
 
 foreach(SERVICE ${SERVICES})
    target_link_libraries(${SERVICE}_service
-        common)
+        common
+        httplib::httplib)
 endforeach()
 
 add_executable(gateway
