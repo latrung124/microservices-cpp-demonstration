@@ -68,7 +68,8 @@ target_include_directories(user_service
 foreach(SERVICE ${SERVICES})
    target_link_libraries(${SERVICE}_service
         common
-        httplib::httplib)
+        httplib::httplib
+        openssl::openssl)
 endforeach()
 
 add_executable(gateway
