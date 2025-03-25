@@ -9,6 +9,8 @@ class ExampleRecipe(ConanFile):
         self.requires("yaml-cpp/0.8.0")
         self.requires("cpp-httplib/0.18.0")
         self.requires("sqlitecpp/3.3.2")
+        self.requires("zlib/1.3.1")
+        self.requires("openssl/3.2.0")
     
     def build_requirements(self):
         self.build_requires("cmake/3.22.6")

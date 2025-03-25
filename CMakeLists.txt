@@ -9,6 +9,7 @@ find_package(protobuf REQUIRED)
 find_package(yaml-cpp REQUIRED)
 find_package(httplib REQUIRED)
 find_package(SQLiteCpp REQUIRED)
+find_package(OpenSSL REQUIRED)
 
 file(GLOB_RECURSE PROTO_FILES common/proto/*.proto)
 # Generate protobuf source and header files
