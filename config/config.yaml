@@ -4,6 +4,19 @@ services:
   user_service:
     local: "localhost:50051"
     cloud: "user-service.prod.svc.cluster.local:80" #temporarily using this
+    security:                                       # mTLS configuration should be configured in environment variables
+      ca_cert: "/mTLS/ca.crt"
+      client_cert: "/mTLS/user-service.crt"
+      client_key: "/mTLS/user-service.key"
+      server_cert: "/mTLS/user-service.crt"
+      server_key: "/mTLS/user-service.key"
   task_management_service:
     local: "localhost:50052"
     cloud: "task-service.prod.svc.cluster.local:80" #temporarily using this
+    security:                                       # mTLS configuration should be configured in environment variables
+      ca_cert: "/mTLS/ca.crt"
+      client_cert: "/mTLS/task-management-service.crt"
+      client_key: "/mTLS/task-management-service.key"
+      server_cert: "/mTLS/task-management-service.crt"
+      server_key: "/mTLS/task-management-service.key"
+ 
