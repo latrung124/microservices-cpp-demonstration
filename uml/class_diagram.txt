@@ -1,0 +1,153 @@
+@startuml
+
+' ********************** COMMON COMPONENTS **********************
+class ConfigManager {
+  + get_config(key: string): string
+  - load_config(): void
+}
+
+interface IServiceDiscovery {
+  + discover(service_name: string): List<string>
+  + register_service(service_name: string, address: string)
+}
+
+class ConsulDiscovery {
+  + discover(service_name: string): List<string>
+  + register_service(service_name: string, address: string)
+}
+
+class KubernetesDiscovery {
+  + discover(service_name: string): List<string>
+}
+
+interface IDatabaseConnection {
+  + connect(config: string): void
+  + execute(query: string): void
+}
+
+class SQLiteConnection {
+  + connect(config: string): void
+  + execute(query: string): void
+}
+
+class DatabaseFactory {
+  + create(type: string): IDatabaseConnection
+}
+
+class EventPublisher {
+  + publish(topic: string, data: ProtobufMessage): void
+}
+
+class EventSubscriber {
+  + subscribe(topic: string, callback: function): void
+}
+
+' ********************** GATEWAY **********************
+class GatewayService {
+  + start(): void
+  - discovery: IServiceDiscovery
+  - load_balancer: LoadBalancer
+  - http_server: HttpServer
+}
+
+class AuthMiddleware {
+  + validate_request(req: HttpRequest): bool
+}
+
+class RateLimiter {
+  + check_limit(client_id: string): bool
+}
+
+' ********************** USER SERVICE **********************
+class UserService {
+  + start(): void
+  - handler: UserHandler
+  - repository: IUserRepository
+}
+
+class UserHandler {
+  + create_user(request: CreateUserRequest): UserResponse
+  - validator: UserValidator
+}
+
+class UserValidator {
+  + validate_email(email: string): bool
+}
+
+interface IUserRepository {
+  + create(user: User): string
+  + find(id: string): User
+}
+
+class SQLUserRepository {
+  + create(user: User): string
+  + find(id: string): User
+  - connection: IDatabaseConnection
+}
+
+class User {
+  + id: string
+  + name: string
+  + email: string
+}
+
+' ********************** PROTOBUF MESSAGES **********************
+class CreateUserRequest {
+  + name: string
+  + email: string
+}
+
+class UserResponse {
+  + user: User
+  + error: ErrorInfo
+}
+
+' ********************** RELATIONSHIPS **********************
+' Service Discovery
+GatewayService --> IServiceDiscovery : uses
+ConsulDiscovery ..|> IServiceDiscovery
+KubernetesDiscovery ..|> IServiceDiscovery
+
+' Database
+SQLUserRepository --> IDatabaseConnection : depends
+DatabaseFactory --> IDatabaseConnection : creates
+SQLiteConnection ..|> IDatabaseConnection
+
+' Gateway Components
+GatewayService --> AuthMiddleware : uses
+GatewayService --> RateLimiter : uses
+
+' User Service
+UserService --> UserHandler : contains
+UserHandler --> UserValidator : uses
+UserHandler --> IUserRepository : depends
+SQLUserRepository ..|> IUserRepository
+SQLUserRepository --> DatabaseFactory : uses
+
+' Protobuf
+CreateUserRequest --> User
+UserResponse --> User
+UserResponse --> ErrorInfo
+
+' Messaging
+EventPublisher --> ProtobufMessage : sends
+EventSubscriber --> ProtobufMessage : receives
+
+' Config
+ConfigManager --> GatewayService : configures
+ConfigManager --> UserService : configures
+
+' Notes
+note top of IServiceDiscovery
+  <<interface>>
+  Implementations can be swapped
+  between Consul/Kubernetes
+end note
+
+note right of DatabaseFactory
+  <<factory>>
+  Creates database connections
+  based on config
+end note
+
+@enduml

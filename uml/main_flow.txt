@@ -1,0 +1,16 @@
+@startuml
+actor Client
+participant API_Gateway
+participant ServiceDiscovery
+participant UserProfileService
+database UserDatabase
+
+Client -> API_Gateway: POST /users (Protobuf)
+API_Gateway -> ServiceDiscovery: discover("user_service")
+ServiceDiscovery --> API_Gateway: ["10.0.0.1:50051"]
+API_Gateway -> UserProfileService: Forward request
+UserProfileService -> UserDatabase: Save user
+UserDatabase --> UserProfileService: OK
+UserProfileService --> API_Gateway: Protobuf response
+API_Gateway --> Client: HTTP 200 (Protobuf)
+@enduml
