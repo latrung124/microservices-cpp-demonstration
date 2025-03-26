@@ -4,31 +4,41 @@ microservices-system/
 │   └── config.yaml
 ├── common/
 │   ├── config_manager.h
-│   ├── proto/
-│   │   ├── user_service.proto
-│   │   ├── task_management_service.proto
-│   │   └── ...
-│   └── database/
-│       ├── IDatabaseConnection.h 
-│       ├── SQLiteConnection.h 
-│       └── ...
+│   ├── service_discovery/                      # Service Discovery Component
+│   │   ├── IServiceDiscovery.h                 # Interface 
+│   │   ├── ConsulDiscovery.h                   # Consul Discovery 
+│   │   └── KubernetesDiscovery.h               # K8s Discovery for future implementation
+│   ├── database/
+│   │   ├── IDatabaseConnection.h
+│   │   ├── SQLiteConnection.h
+│   │   └── database_factory.h
+│   ├── messaging/
+│   │   ├── event_publisher.h
+│   │   └── event_subscriber.h
+│   └── proto/
+│       ├── user_service.proto
+│       ├── task_management_service.proto
+│       └── shared.proto
 ├── gateway/
 │   ├── main.cpp
-│   └── gateway_service.h
+│   ├── gateway_service.h                       # Gateway Service, uses IServiceDiscovery
+│   └── middleware/
+│       ├── auth_middleware.h
+│       └── rate_limiter.h
 └── services/
     ├── user/
     │   ├── main.cpp
     │   ├── user_service.h
-    |   ├── business
+    │   ├── business/
     │   │   ├── user_handler.h
-    │   │   └── ...
+    │   │   └── user_validator.h
     │   ├── data-structures/
-    │   │   ├── user.h
-    │   │   └── ...
+    │   │   └── user.h
     │   └── repositories/
     │       ├── IUserRepository.h
-    │       ├── SQLiteUserRepository.h
-    │       └── ...
+    │       ├── SQLUserRepository.h
+    │       └── InMemoryUserRepository.h
     ├── task-management/
     │   └── ... (similar structure)
-    └── ... (other services)
+    └── notification/
+        └── ... (with messaging integration)
