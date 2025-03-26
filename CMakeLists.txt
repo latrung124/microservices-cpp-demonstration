@@ -24,6 +24,9 @@ set(COMMON_SOURCES
     common/database/IDatabaseConnection.h
     common/database/SQLiteConnection.h
     common/database/SQLiteConnection.cpp
+    common/service_discovery/IServiceDiscovery.h
+    common/service_discovery/ConsulDiscovery.h
+    common/service_discovery/ConsulDiscovery.cpp
 
     common/config_manager.h
     common/config_manager.cpp)
