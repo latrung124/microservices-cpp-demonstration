@@ -9,14 +9,14 @@
 #ifndef CONSULDISCOVERY_H_
 #define CONSULDISCOVERY_H_
 
-#include <unordered_map>
+#include <httplib.h>
 
 #include "common/service_discovery/IServiceDiscovery.h"
 
 class ConsulDiscovery : public IServiceDiscovery
 {
 public:
-    ConsulDiscovery();
+    ConsulDiscovery(std::string_view addr = "localhost", int port = 8500, bool enabledHealthCheck);
     virtual ~ConsulDiscovery() = default;
 
     virtual std::vector<std::string> discover(const std::string& name) override;
@@ -24,8 +24,8 @@ public:
     virtual void unregisterService(const std::string &name, const std::string &url, int port) override;
 
 private:
-    std::vector<std::string> m_urls;
-    std::unordered_map<std::string, std::vector<std::string>> m_serviceMap;
+    httplib::Client m_client;
+    bool m_enabledHealthCheck = true;
 };
 
 #endif // CONSULDISCOVERY_H_

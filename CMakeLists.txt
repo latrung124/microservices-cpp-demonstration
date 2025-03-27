@@ -10,6 +10,7 @@ find_package(yaml-cpp REQUIRED)
 find_package(httplib REQUIRED)
 find_package(SQLiteCpp REQUIRED)
 find_package(OpenSSL REQUIRED)
+find_package(nlohmann_json REQUIRED)
 
 file(GLOB_RECURSE PROTO_FILES common/proto/*.proto)
 # Generate protobuf source and header files
@@ -42,6 +43,7 @@ target_include_directories(common
 
 target_link_libraries(common
     PUBLIC
+    nlohmann_json::nlohmann_json
     protobuf::protobuf
     yaml-cpp
     SQLiteCpp)

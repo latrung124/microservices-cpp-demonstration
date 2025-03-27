@@ -20,6 +20,8 @@ class GatewayService
 public:
     using ConfigManagerPtr = std::shared_ptr<ConfigManager>;
     using HttpClientPtr = std::shared_ptr<httplib::Client>;
+    using IServiceDiscoveryUPtr = std::unique_ptr<IServiceDiscovery>;
+
     GatewayService(ConfigManagerPtr config);
 
     void start();
