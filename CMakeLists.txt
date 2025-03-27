@@ -43,6 +43,7 @@ target_include_directories(common
 
 target_link_libraries(common
     PUBLIC
+    httplib::httplib
     nlohmann_json::nlohmann_json
     protobuf::protobuf
     yaml-cpp
@@ -73,7 +74,6 @@ target_include_directories(user_service
 foreach(SERVICE ${SERVICES})
    target_link_libraries(${SERVICE}_service
         common
-        httplib::httplib
         openssl::openssl)
 endforeach()
 
