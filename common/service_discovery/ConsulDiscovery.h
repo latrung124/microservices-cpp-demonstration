@@ -19,7 +19,7 @@ class ConsulDiscovery : public IServiceDiscovery
 {
 public:
     ConsulDiscovery(std::string_view addr = "localhost", int port = 8500, bool enabledHealthCheck = true);
-    virtual ~ConsulDiscovery() = default;
+    virtual ~ConsulDiscovery();
 
     virtual std::vector<std::string> discover(const std::string& name) override;
     virtual void registerService(const std::string &name, const std::string &url, int port) override;

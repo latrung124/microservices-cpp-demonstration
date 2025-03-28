@@ -20,6 +20,10 @@ ConsulDiscovery::ConsulDiscovery(std::string_view addr, int port, bool enabledHe
     // ...
 }
 
+ConsulDiscovery::~ConsulDiscovery()
+{
+}
+
 std::vector<std::string> ConsulDiscovery::discover(const std::string& name)
 {
     using namespace nlohmann;

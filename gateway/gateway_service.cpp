@@ -8,9 +8,15 @@
 #include "gateway/gateway_service.h"
 
 #include "common/config_manager.h"
+#include "common/service_discovery/ConsulDiscovery.h"
 
 GatewayService::GatewayService(ConfigManagerPtr config)
     : m_config(config)
+    , m_discovery(std::make_unique<ConsulDiscovery>())
+{
+}
+
+GatewayService::~GatewayService()
 {
 }
 
@@ -60,4 +66,15 @@ void GatewayService::start()
     std::cout << "Gateway service listening on port 8080" << std::endl;
 
     server.listen("localhost", 8080);
+}
+
+void GatewayService::handleRequest()
+{
+    auto instances = m_discovery->discover("user_service");
+
+    if(instances.empty()) {
+        throw std::runtime_error("No instances found for user_service");
+    }
+
+    //Use instances...
 }

@@ -14,19 +14,24 @@
 #include <httplib.h>
 
 class ConfigManager;
+class ConsulDiscovery;
 
 class GatewayService
 {
 public:
     using ConfigManagerPtr = std::shared_ptr<ConfigManager>;
     using HttpClientPtr = std::shared_ptr<httplib::Client>;
+    using ConsulDiscoveryUPtr = std::unique_ptr<ConsulDiscovery>;
 
     GatewayService(ConfigManagerPtr config);
+    ~GatewayService();
 
     void start();
+    void handleRequest();
 
 private:
     ConfigManagerPtr m_config;
     HttpClientPtr m_httpClient;
+    ConsulDiscoveryUPtr m_discovery;
 };
 #endif // GATEWAY_SERVICE_H
